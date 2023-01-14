@@ -1,1 +1,1 @@
-web: gunicon social_tictactoe.wsgi --log-file -
+web: python manage.py migrate && gunicorn social_tictactoe.wsgi
