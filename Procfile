@@ -1,0 +1,1 @@
+web: gunicon social_tictactoe.wsgi --log-file -

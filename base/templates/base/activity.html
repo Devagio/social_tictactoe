@@ -1,0 +1,51 @@
+
+    {% for result in results %}
+    <div class="activities__box">
+      <div class="activities__boxHeader roomListRoom__header">
+        <a href="{% url 'room' result.room.id %}" class="roomListRoom__author">
+          <div class="avatar avatar--small">
+            {% for profile in profiles %}
+            {% if result.room.host == profile.user %}
+            <img src="{{ profile.profile_picture.url }}" />
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="avatar avatar--small">
+            {% for profile in profiles %}
+            {% if result.room.challenger == profile.user %}
+            <img src="{{ profile.profile_picture.url }}" />
+            {% endif %}
+            {% endfor %}
+          </div>
+          <p>
+            {{ result.room.name }}
+            <span>{{ result.created|timesince }} ago</span>
+          </p>
+        </a>
+
+      </div>
+      <div class="activities__boxContent">
+        {% if result.room.overall == None %}
+            <p><a href="{% url 'room' result.room.id %}">"{{ result.room.name }}"</a> ended in a draw 
+                between <a href="{% url 'profile' result.room.host.id %}">@{{ result.room.host }}</a> 
+                and <a href="{% url 'profile' result.room.challenger.id %}">@{{ result.room.challenger }}</a> 
+                with a score of {{ result.room.host_score }} : {{ result.room.challenger_score }}.</p>
+        {% else %}
+            <p><a href="{% url 'profile' result.room.overall.id %}">@{{ result.room.overall }}</a> won 
+                <a href="{% url 'room' result.room.id %}">"{{ result.room.name }}"</a> with a score of 
+                {% if result.room.overall == result.room.host %}{{ result.room.host_score }} : {{ result.room.challenger_score }} 
+                against <a href="{% url 'profile' result.room.challenger.id %}">@{{ result.room.challenger }}</a>
+                {% else %}{{ result.room.challenger_score }} : {{ result.room.host_score }} 
+                against <a href="{% url 'profile' result.room.host.id %}">@{{ result.room.host }}</a>{% endif %}.</p>
+        {% endif %}
+
+      </div>
+    </div>
+    {% endfor %}
+  
+
+
+
+
+
+                

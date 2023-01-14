@@ -1,0 +1,23 @@
+<div class="topics">
+    <div class="topics__header">
+      <h2>Browse by Match Length</h2>
+    </div>
+    <ul class="topics__list">
+      <li>
+        {% if user == None %}
+        <a href="{% url 'home' %}" class="active">All <span>{{ all_room_count }}</span></a>
+        {% else %}
+        <a href="{% url 'profile' user.id %}" class="active">All <span>{{ all_room_count }}</span></a>
+        {% endif %}
+      </li>
+      {% for length in lengths %}
+      <li>
+        {% if user == None %}
+        <a href="{% url 'home' %}?q={{length.0}}">Best of {{length.0}} Game{% if length.0 != 1 %}s{% endif %} <span>{{ length.1 }}</span></a>
+        {% else %}
+        <a href="{% url 'profile' user.id %}?q={{length.0}}">Best of {{length.0}} Game{% if length.0 != 1 %}s{% endif %} <span>{{ length.1 }}</span></a>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>

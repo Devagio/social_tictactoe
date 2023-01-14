@@ -1,0 +1,80 @@
+{% extends './main.html' %}
+
+{% block content %}
+
+  <main class="profile-page layout layout--3">
+    <div class="container">
+      <!-- Topics Start -->
+      {% include './game_length_filter.html' %}
+      <!-- Topics End -->
+
+      <!-- Room List Start -->
+      <div class="roomList">
+        <div class="profile">
+          <div class="profile__avatar">
+            <div class="avatar avatar--large active">
+              {% for profile in profiles %}
+              {% if user == profile.user %}
+              <img src="{{ profile.profile_picture.url }}" />
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <div class="profile__info">
+            <h3>
+              {% for profile in profiles %}
+              {% if user == profile.user %}
+               {{ profile.full_name }}
+              {% endif %}
+              {% endfor %}
+            </h3>
+            <p>@{{user.username}}</p>
+            {% if user == request.user %}
+            <a href="{% url 'update-user' %}" class="btn btn--main btn--pill">Edit Profile</a>
+            {% endif %}
+          </div>
+          <div class="profile__about">
+            <h3>About</h3>
+            <p>
+              {% for profile in profiles %}
+              {% if user == profile.user %}
+               {{ profile.bio }}
+              {% endif %}
+              {% endfor %}
+            </p>
+          </div>
+
+          <div class="profile__about">
+            <h3>Lifetime Match Record</h3>
+              {% for profile in profiles %}
+              {% if user == profile.user %}
+               <p>Wins : {{ profile.wins }}</p>
+               <p>Draws : {{ profile.draws }}</p>
+               <p>Losses : {{ profile.losses }}</p>
+              {% endif %}
+              {% endfor %}
+          </div>
+        </div>
+
+        <div class="roomList__header">
+          <div>
+            <h2>Matches hosted or challenged by @{{user.username}}</h2>
+          </div>
+        </div>
+        {% include './feed.html' %}
+        
+      </div>
+      <!-- Room List End -->
+
+      <!-- Activities Start -->
+      <div class="activities">
+        <div class="activities__header">
+          <h2>Recent Match Results of @{{user.username}}</h2>
+        </div>
+      {% include './activity.html' %}
+      </div>
+      <!-- Activities End -->
+    </div>
+  </main>
+
+  {% endblock content %}

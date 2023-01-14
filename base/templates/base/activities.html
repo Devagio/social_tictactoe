@@ -1,0 +1,70 @@
+ {% extends './main.html' %}
+ {% block content %}
+ <main class="layout">
+      <div class="container">
+        <div class="layout__box">
+          <div class="layout__boxHeader">
+            <div class="layout__boxTitle">
+              <a href="{% url 'home' %}">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                  <title>arrow-left</title>
+                  <path
+                    d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z"
+                  ></path>
+                </svg>
+              </a>
+              <h3>Recent Match Results</h3>
+            </div>
+          </div>
+
+          <div class="activities-page layout__body">
+            {% for result in results %}
+            <div class="activities__box">
+              <div class="activities__boxHeader roomListRoom__header">
+                <a href="{% url 'room' result.room.id %}" class="roomListRoom__author">
+                  <div class="avatar avatar--small">
+                    {% for profile in profiles %}
+                    {% if result.room.host == profile.user %}
+                    <img src="{{ profile.profile_picture.url }}" />
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                  <div class="avatar avatar--small">
+                    {% for profile in profiles %}
+                    {% if result.room.challenger == profile.user %}
+                    <img src="{{ profile.profile_picture.url }}" />
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                  <p>
+                    {{ result.room.name }}
+                    <span>{{ result.created|timesince }} ago</span>
+                  </p>
+                </a>
+        
+              </div>
+              <div class="activities__boxContent">
+                {% if result.room.overall == None %}
+                    <p><a href="{% url 'room' result.room.id %}">"{{ result.room.name }}"</a> ended in a draw 
+                        between <a href="{% url 'profile' result.room.host.id %}">@{{ result.room.host }}</a> 
+                        and <a href="{% url 'profile' result.room.challenger.id %}">@{{ result.room.challenger }}</a> 
+                        with a score of {{ result.room.host_score }} : {{ result.room.challenger_score }}.</p>
+                {% else %}
+                    <p><a href="{% url 'profile' result.room.overall.id %}">@{{ result.room.overall }}</a> won 
+                        <a href="{% url 'room' result.room.id %}">"{{ result.room.name }}"</a> with a score of 
+                        {% if result.room.overall == result.room.host %}{{ result.room.host_score }} : {{ result.room.challenger_score }} 
+                        against <a href="{% url 'profile' result.room.challenger.id %}">@{{ result.room.challenger }}</a>
+                        {% else %}{{ result.room.challenger_score }} : {{ result.room.host_score }} 
+                        against <a href="{% url 'profile' result.room.host.id %}">@{{ result.room.host }}</a>{% endif %}.</p>
+                {% endif %}
+        
+              </div>
+            </div>
+            {% endfor %}
+            
+          </div>
+        </div>
+      </div>
+    </main>
+
+{% endblock content %}
