@@ -6,11 +6,13 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.views.decorators.csrf import csrf_exempt
 from .models import Room, Message, Results, Profile
 from .forms import RoomForm, UserForm, ProfileForm
 from .logic import check
 
 
+@csrf_exempt
 def login_page(request):
 
     page = 'login'
@@ -39,11 +41,13 @@ def login_page(request):
     return render(request, 'base/login_register.html', context)
 
 
+@csrf_exempt
 def logout_user(request):
     logout(request)
     return redirect('home')
 
 
+@csrf_exempt
 def register_user(request):
     if request.user.is_authenticated:
         messages.error(request, 'Please logout first.')
@@ -70,6 +74,7 @@ def register_user(request):
     return render(request, 'base/login_register.html', context)
 
 
+@csrf_exempt
 def home(request):
     rooms = Room.objects.all()
     profiles = Profile.objects.all()
@@ -95,6 +100,7 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
+@csrf_exempt
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all().order_by('-created')
@@ -191,6 +197,7 @@ def room(request, pk):
     return render(request, 'base/room.html', context)
 
 
+@csrf_exempt
 def profile(request, pk):
     user = User.objects.get(id=pk)
     rooms = Room.objects.all()
@@ -218,6 +225,7 @@ def profile(request, pk):
     return render(request, 'base/profile.html', context)
 
 
+@csrf_exempt
 @login_required(login_url='login')
 def create_room(request):
     form = RoomForm()
@@ -235,6 +243,7 @@ def create_room(request):
     return render(request, 'base/room_form.html', context)
 
 
+@csrf_exempt
 @login_required(login_url='login')
 def update_room(request, pk):
     room = Room.objects.get(id=pk)
@@ -255,6 +264,7 @@ def update_room(request, pk):
     return render(request, 'base/room_form.html', context)
 
 
+@csrf_exempt
 @login_required(login_url='login')
 def delete_room(request, pk):
     room = Room.objects.get(id=pk)
@@ -269,6 +279,7 @@ def delete_room(request, pk):
     return render(request, 'base/delete_room.html', {'obj':room, 'profiles':profiles})
 
 
+@csrf_exempt
 @login_required(login_url='login')
 def update_user(request):
     user = request.user
@@ -291,6 +302,7 @@ def update_user(request):
     return render(request, 'base/update_user.html', {'form':form, 'form2':form2, 'profiles':profiles})
 
 
+@csrf_exempt
 def topics_page(request):
     rooms = Room.objects.all()
     all_room_count = rooms.count()
@@ -303,6 +315,7 @@ def topics_page(request):
     return render(request, 'base/topics.html', context)
 
 
+@csrf_exempt
 def activities_page(request):
     results = Results.objects.all()
     profiles = Profile.objects.all()
