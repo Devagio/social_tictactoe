@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn social_tictactoe.wsgi
+web: gunicorn social_tictactoe.wsgi
