@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-&fr!2aa5rpp1t44u-(b==h!78cdcm6vdl5n)uc$da^nn@9g3)b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://socialtictactoe-production.up.railway.app/',]
+ALLOWED_HOSTS = ['socialtictactoe-production.up.railway.app']
 
 
 # Application definition
